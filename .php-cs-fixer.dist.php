@@ -7,6 +7,7 @@ $finder = (new PhpCsFixer\Finder())
     ->in(__DIR__ . '/database')
     ->in(__DIR__ . '/public')
     ->in(__DIR__ . '/routes')
+    ->in(__DIR__ . '/tests')
 ;
 
 return (new PhpCsFixer\Config())
