@@ -4,7 +4,6 @@ namespace App\Utils;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Id\AbstractIdGenerator;
-use Exception;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -14,15 +13,14 @@ use Ramsey\Uuid\UuidInterface;
 class UuidGenerator extends AbstractIdGenerator
 {
     /**
-     * Generate an identifier
+     * Generate an identifier.
      *
-     * @param object | null $entity
+     * @param object|null $entity
      *
-     * @throws Exception
+     * @throws \Exception
      */
     public function generateId(EntityManagerInterface $em, $entity): UuidInterface
     {
         return Uuid::uuid4();
     }
-
 }

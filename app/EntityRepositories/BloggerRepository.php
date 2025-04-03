@@ -14,7 +14,6 @@ class BloggerRepository extends EntityRepository
         return App::make(self::class);
     }
 
-
     public function get(string $uuid): Blogger
     {
         /** @var Blogger $entity */
@@ -26,5 +25,5 @@ class BloggerRepository extends EntityRepository
         return $entity;
     }
 
-    //TODO: implement other queries
+    // TODO: implement other queries
 }

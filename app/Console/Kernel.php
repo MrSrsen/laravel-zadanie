@@ -12,9 +12,7 @@ class Kernel extends ConsoleKernel
         $this->load(__DIR__);
     }
 
-
     protected function schedule(Schedule $schedule): void
     {
     }
-
 }

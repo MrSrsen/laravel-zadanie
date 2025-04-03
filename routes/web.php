@@ -11,20 +11,20 @@ Route::get('/', [HomeController::class, 'getVersion']);
 
 Route::controller(AuthController::class)
     ->group(function () {
-        //TODO: add auth endpoints
+        // TODO: add auth endpoints
     });
 
 Route::controller(SubscriberController::class)
     ->group(function () {
-        //TODO: add subscriber endpoints
+        // TODO: add subscriber endpoints
     });
 
 Route::controller(ArticleController::class)
     ->group(function () {
-        //TODO: add article endpoints
+        // TODO: add article endpoints
     });
 
 Route::controller(ArticleCategoryController::class)
     ->group(function () {
-        //TODO: add article category endpoints
+        // TODO: add article category endpoints
     });

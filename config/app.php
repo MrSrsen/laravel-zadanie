@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -39,7 +38,7 @@ return [
     |
     */
 
-    'debug' => (bool)env('APP_DEBUG', false),
+    'debug' => (bool) env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -120,11 +119,10 @@ return [
 
     'maintenance' => [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
-        'store'  => env('APP_MAINTENANCE_STORE', 'database'),
+        'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
     'providers' => [
-
         // Laravel Framework Services Providers...
 
         Illuminate\Auth\AuthServiceProvider::class,
@@ -150,6 +148,5 @@ return [
         App\Providers\RouteServiceProvider::class,
     ],
 
-    'aliases' => []
-
+    'aliases' => [],
 ];

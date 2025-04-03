@@ -8,14 +8,12 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Throwable;
 
 class JsonResponseHandler
 {
     protected array $replacements = [];
 
-
-    public function handle(Throwable $exception): Response
+    public function handle(\Throwable $exception): Response
     {
         // Convert Eloquent 500 ModelNotFoundException into a 404 NotFoundHttpException
         if ($exception instanceof ModelNotFoundException) {
@@ -25,8 +23,7 @@ class JsonResponseHandler
         return $this->genericResponse($exception)->withException($exception);
     }
 
-
-    protected function genericResponse(Throwable $exception): Response
+    protected function genericResponse(\Throwable $exception): Response
     {
         $replacements = $this->prepareReplacements($exception);
 
@@ -34,7 +31,7 @@ class JsonResponseHandler
 
         array_walk_recursive(
             $response,
-            function (&$value) use ($exception, $replacements) {
+            function (&$value) use ($replacements) {
                 if (Str::startsWith($value, ':') && isset($replacements[$value])) {
                     $value = $replacements[$value];
                 }
@@ -42,24 +39,23 @@ class JsonResponseHandler
         );
 
         $response = $this->recursivelyRemoveEmptyReplacements($response);
-        if (!array_key_exists('errors', $response)) {
+        if (!\array_key_exists('errors', $response)) {
             $response['errors'] = [];
         }
 
         return new Response($response, $this->getStatusCode($exception), $this->getHeaders($exception));
     }
 
-
-    protected function prepareReplacements(Throwable $exception): array
+    protected function prepareReplacements(\Throwable $exception): array
     {
         $statusCode = $this->getStatusCode($exception);
 
         if (!$message = $exception->getMessage()) {
-            $message = sprintf('%d %s', $statusCode, Response::$statusTexts[$statusCode]);
+            $message = \sprintf('%d %s', $statusCode, Response::$statusTexts[$statusCode]);
         }
 
         $replacements = [
-            ':message'     => $message,
+            ':message' => $message,
             ':status_code' => $statusCode,
         ];
 
@@ -73,21 +69,21 @@ class JsonResponseHandler
             $replacements[':code'] = $code;
         }
 
-        if (config('app.debug') === true) {
+        if (true === config('app.debug')) {
             $replacements[':debug'] = [
-                'line'  => $exception->getLine(),
-                'file'  => $exception->getFile(),
-                'class' => get_class($exception),
+                'line' => $exception->getLine(),
+                'file' => $exception->getFile(),
+                'class' => \get_class($exception),
                 'trace' => explode("\n", $exception->getTraceAsString()),
             ];
 
             // Attach trace of previous exception, if exists
-            if (!is_null($exception->getPrevious())) {
+            if (!\is_null($exception->getPrevious())) {
                 $currentTrace = $replacements[':debug']['trace'];
 
                 $replacements[':debug']['trace'] = [
                     'previous' => explode("\n", $exception->getPrevious()->getTraceAsString()),
-                    'current'  => $currentTrace,
+                    'current' => $currentTrace,
                 ];
             }
         }
@@ -95,11 +91,10 @@ class JsonResponseHandler
         return array_merge($replacements, $this->replacements);
     }
 
-
     protected function recursivelyRemoveEmptyReplacements(array $input): array
     {
         foreach ($input as &$value) {
-            if (is_array($value)) {
+            if (\is_array($value)) {
                 $value = $this->recursivelyRemoveEmptyReplacements($value);
             }
         }
@@ -107,7 +102,7 @@ class JsonResponseHandler
         return array_filter(
             $input,
             function ($value) {
-                if (is_string($value)) {
+                if (\is_string($value)) {
                     return !Str::startsWith($value, ':');
                 }
 
@@ -116,14 +111,12 @@ class JsonResponseHandler
         );
     }
 
-
-    protected function getHeaders(Throwable $exception): array
+    protected function getHeaders(\Throwable $exception): array
     {
         return $exception instanceof HttpExceptionInterface ? $exception->getHeaders() : [];
     }
 
-
-    protected function getStatusCode(Throwable $exception): int
+    protected function getStatusCode(\Throwable $exception): int
     {
         if ($exception instanceof ValidationException) {
             return $exception->status;
@@ -132,16 +125,14 @@ class JsonResponseHandler
         return $exception instanceof HttpExceptionInterface ? $exception->getStatusCode() : 500;
     }
 
-
     protected function newResponseArray(): array
     {
         return [
-            'message'     => ':message',
+            'message' => ':message',
             'status_code' => ':status_code',
-            'data'        => [],
-            'errors'      => ':errors',
-            'debug'       => ':debug',
+            'data' => [],
+            'errors' => ':errors',
+            'debug' => ':debug',
         ];
     }
-
 }

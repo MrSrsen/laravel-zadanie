@@ -14,7 +14,6 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Routing\Exceptions\BackedEnumCaseNotFoundException;
 use Symfony\Component\HttpFoundation\Response;
-use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -22,13 +21,12 @@ class Handler extends ExceptionHandler
     protected $dontReport = [
     ];
 
-
     /**
      * Render an exception into an HTTP response.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
-    public function render($request, Throwable $e): Response
+    public function render($request, \Throwable $e): Response
     {
         if ($e instanceof BackedEnumCaseNotFoundException) {
             throw new SloneekInvalidEnumException(previous: $e);
@@ -54,5 +52,4 @@ class Handler extends ExceptionHandler
 
         return parent::render($request, $e);
     }
-
 }
