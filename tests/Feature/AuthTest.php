@@ -15,9 +15,8 @@ class AuthTest extends TestCase
 
     public function testEmpty(): void
     {
-        $response = $this->post('/api/login');
-
-        $response
+        $this
+            ->postJson('/api/login')
             ->assertStatus(422)
             ->assertJson([
                 'errors' => [
@@ -33,12 +32,11 @@ class AuthTest extends TestCase
 
     public function testInvalidData(): void
     {
-        $response = $this->postJson('/api/login', [
-            'login' => 'aaa',
-            'password' => 'aaa',
-        ]);
-
-        $response
+        $this
+            ->postJson('/api/login', [
+                'login' => 'aaa',
+                'password' => 'aaa',
+            ])
             ->assertStatus(422)
             ->assertJson([
                 'errors' => [
@@ -54,12 +52,11 @@ class AuthTest extends TestCase
 
     public function testNotExistingUser(): void
     {
-        $response = $this->postJson('/api/login', [
-            'login' => 'non.existing.user@example.com',
-            'password' => 'pass_123',
-        ]);
-
-        $response
+        $this
+            ->postJson('/api/login', [
+                'login' => 'non.existing.user@example.com',
+                'password' => 'pass_123',
+            ])
             ->assertStatus(401)
             ->assertJson([
                 'error' => 'Unauthorized',
@@ -68,26 +65,34 @@ class AuthTest extends TestCase
 
     public function testInvalidPassword(): void
     {
-        $response = $this->postJson('/api/login', [
-            'login' => 'jozko.mrkvicka@example.sk',
-            'password' => 'pass_123',
-        ]);
-
-        $response
+        $this
+            ->postJson('/api/login', [
+                'login' => 'jozko.mrkvicka@example.sk',
+                'password' => 'pass_123',
+            ])
             ->assertStatus(401)
             ->assertJson([
                 'error' => 'Unauthorized',
             ]);
     }
 
-    public function testSuccessfulLogin(): void
+    public function testMeUnauthenticated(): void
     {
-        $response = $this->postJson('/api/login', [
-            'login' => 'jozko.mrkvicka@example.sk',
-            'password' => 'mrkvicka',
-        ]);
+        $this
+            ->getJson('/api/me')
+            ->assertStatus(403)
+            ->assertJson([
+                'message' => 'Unauthenticated.',
+            ]);
+    }
 
-        $response
+    public function testSuccessfulLogin(): string
+    {
+        $response = $this
+            ->postJson('/api/login', [
+                'login' => 'jozko.mrkvicka@example.sk',
+                'password' => 'mrkvicka',
+            ])
             ->assertStatus(200)
             ->assertJsonStructure([
                 'access_token',
@@ -95,6 +100,31 @@ class AuthTest extends TestCase
             ->assertJsonFragment([
                 'token_type' => 'bearer',
                 'expires_in' => 3600,
+            ]);
+
+        return $response->json('access_token');
+    }
+
+    /** @depends testSuccessfulLogin */
+    public function testMe(string $token): void
+    {
+        $this
+            ->getJson('/api/me', ['Authorization' => 'Bearer '.$token])
+            ->assertStatus(200)
+            ->assertJsonFragment([
+                'email' => 'jozko.mrkvicka@example.sk',
+                'title' => 'Jožko Mrkvička',
+            ]);
+    }
+
+    /** @depends testSuccessfulLogin */
+    public function testLogout(string $token): void
+    {
+        $this
+            ->postJson('/api/logout', [], ['Authorization' => 'Bearer '.$token])
+            ->assertStatus(200)
+            ->assertJson([
+                'message' => 'Successfully logged out',
             ]);
     }
 }

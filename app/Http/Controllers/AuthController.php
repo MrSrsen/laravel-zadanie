@@ -8,11 +8,6 @@ use Illuminate\Routing\Controller;
 
 class AuthController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:api', ['except' => ['login']]);
-    }
-
     public function login(LoginRequest $request): JsonResponse
     {
         $credentials = [
@@ -29,7 +24,13 @@ class AuthController extends Controller
 
     public function me(): JsonResponse
     {
-        return response()->json(auth()->user());
+        $user = auth()->user();
+
+        return response()->json([
+            'id' => $user->getId(),
+            'email' => $user->getEmail(),
+            'title' => $user->getTitle(),
+        ]);
     }
 
     public function logout(): JsonResponse

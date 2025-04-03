@@ -9,9 +9,11 @@ Route::group(['prefix' => '/api'], function () {
     Route::get('/version', [HomeController::class, 'getVersion']);
 
     Route::post('/login', [AuthController::class, 'login']);
-    Route::post('/me', [AuthController::class, 'me']);
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::post('/refresh', [AuthController::class, 'refresh']);
+    Route::group(['middleware' => 'auth:api'], function () {
+        Route::get('/me', [AuthController::class, 'me']);
+        Route::post('/logout', [AuthController::class, 'logout']);
+        Route::post('/refresh', [AuthController::class, 'refresh']);
+    });
 });
 
 /*Route::controller(AuthController::class)
