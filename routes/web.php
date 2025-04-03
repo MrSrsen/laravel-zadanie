@@ -1,10 +1,7 @@
 <?php
 
-use App\Http\Controllers\ArticleCategoryAbstractController;
-use App\Http\Controllers\ArticleAbstractController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\SubscriberAbstractController;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 

@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "api-skeletons/laravel-doctrine-data-fixtures": "^1.0",
         "doctrine/annotations": "^2.0",
         "laravel-doctrine/migrations": "^3.2",
         "laravel-doctrine/orm": "^2.1",
@@ -26,7 +27,7 @@
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Database\\Fixtures\\": "database/fixtures/"
         }
     },
     "autoload-dev": {

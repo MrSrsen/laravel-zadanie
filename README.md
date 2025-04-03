@@ -25,30 +25,11 @@
 1. Integration tests
 2. ...
 
-# Epilogue
+## Fixtures
 
-1. Reálne netreba rozposielať emaily skrz nejakú SMTP službu, stačí to mocknuť.
-2. Ako primárne kľúče používame UUID - je to už pripravené v kostre
-
-# Hints
-
-- project start (see for more info: https://laravel.com/docs/11.x#docker-installation-using-sail)
-
-  ```bash
-  $ ./vendor/bin/sail up
-  ```
-  
-- generate migration in doctrine
-
-  ```bash
-  $ ./vendor/bin/sail artisan doctrine:migrations:diff
-  ```
-
-- apply migration in doctrine
-
-  ```bash
-  $ ./vendor/bin/sail artisan doctrine:migrations:migrate
-  ```
+```shell
+php artisan doctrine:data-fixtures:import default
+```
 
 ## Xdebug for CLI commands
 
