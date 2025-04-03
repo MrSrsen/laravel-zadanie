@@ -49,3 +49,18 @@
   ```bash
   $ ./vendor/bin/sail artisan doctrine:migrations:migrate
   ```
+
+## Xdebug for CLI commands
+
+```shell
+export PHP_IDE_CONFIG="serverName=php-docker.local"
+
+php -d xdebug.mode=debug -d xdebug.start_with_request=yes bin/console ...
+```
+
+## Linky
+
+https://laravel.com/docs/11.x#sail-on-linux
+https://github.com/tymondesigns/jwt-auth
+https://jwt-auth.readthedocs.io/
+https://laravel-doctrine-orm-official.readthedocs.io/en/latest/

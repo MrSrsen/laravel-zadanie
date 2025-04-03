@@ -4,17 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 
-class HomeController extends Controller
+class HomeController
 {
     public function getVersion(): JsonResponse
     {
-        $composerData = json_decode(file_get_contents(base_path().'/composer.json'), true);
+        $package = \Composer\InstalledVersions::getRootPackage();
 
-        return $this->successResponse(
-            [
-                'name' => $composerData['name'],
-                'description' => $composerData['description'],
-            ]
-        );
+        return new JsonResponse([
+            'name' => $package['name'],
+            'version' => $package['version'],
+        ]);
     }
 }
