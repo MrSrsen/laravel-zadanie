@@ -6,7 +6,6 @@ use App\Utils\UuidGenerator;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 
-#[\Doctrine\ORM\Mapping\HasLifecycleCallbacks]
 trait EntityTrait
 {
     #[\Doctrine\ORM\Mapping\Column(type: 'guid')]

@@ -3,28 +3,37 @@
 namespace App\Entities;
 
 use App\EntityRepositories\BloggerRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 #[\Doctrine\ORM\Mapping\Entity(repositoryClass: BloggerRepository::class)]
 #[\Doctrine\ORM\Mapping\HasLifecycleCallbacks]
-class Blogger implements JWTSubject, \Illuminate\Contracts\Auth\Authenticatable
+class Blogger implements JWTSubject, Authenticatable
 {
     use EntityTrait;
 
     #[\Doctrine\ORM\Mapping\Column(type: 'string', nullable: false)]
-    public string $title;
+    private string $title;
 
     #[\Doctrine\ORM\Mapping\Column(type: 'string', unique: true, nullable: false)]
-    public string $email;
+    private string $email;
 
     #[\Doctrine\ORM\Mapping\Column(type: 'string', nullable: false)]
-    public string $password;
+    private string $password;
+
+    /** @var Collection<ArticleCategory> */
+    #[\Doctrine\ORM\Mapping\ManyToMany(targetEntity: ArticleCategory::class, mappedBy: 'bloggers')]
+    private Collection $articleCategories;
 
     public function __construct(string $title, string $email, string $password)
     {
         $this->title = $title;
         $this->email = $email;
         $this->password = $password;
+
+        $this->articleCategories = new ArrayCollection();
     }
 
     public function getTitle(): string
@@ -59,6 +68,29 @@ class Blogger implements JWTSubject, \Illuminate\Contracts\Auth\Authenticatable
     public function setPassword(string $password): static
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getArticleCategories(): Collection
+    {
+        return $this->articleCategories;
+    }
+
+    public function addArticleCategory(ArticleCategory $articleCategory): static
+    {
+        if (!$this->articleCategories->contains($articleCategory)) {
+            $this->articleCategories->add($articleCategory);
+        }
+
+        return $this;
+    }
+
+    public function removeArticleCategory(ArticleCategory $articleCategory): static
+    {
+        if ($this->articleCategories->contains($articleCategory)) {
+            $this->articleCategories->removeElement($articleCategory);
+        }
 
         return $this;
     }
