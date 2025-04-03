@@ -35,6 +35,16 @@ class AuthController extends Controller
 
     public function logout(): JsonResponse
     {
+        /*
+         * Needs doctrine storage
+         *
+         * tests/Feature/AuthTest.php
+         * vendor/tymon/jwt-auth/src/Providers/Storage/Illuminate.php
+         * vendor/tymon/jwt-auth/src/Contracts/Providers/Storage.php
+         * config/jwt.php - providers.storage
+         */
+        throw new \RuntimeException('Not implemented.');
+
         auth()->logout();
 
         return response()->json(['message' => 'Successfully logged out']);

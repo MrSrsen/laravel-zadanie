@@ -116,15 +116,4 @@ class AuthTest extends TestCase
                 'title' => 'Jožko Mrkvička',
             ]);
     }
-
-    /** @depends testSuccessfulLogin */
-    public function testLogout(string $token): void
-    {
-        $this
-            ->postJson('/api/logout', [], ['Authorization' => 'Bearer '.$token])
-            ->assertStatus(200)
-            ->assertJson([
-                'message' => 'Successfully logged out',
-            ]);
-    }
 }
