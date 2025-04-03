@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Routing\Controller;
 
-class AuthController extends Controller
+readonly class AuthController
 {
     public function login(LoginRequest $request): JsonResponse
     {
@@ -44,7 +43,6 @@ class AuthController extends Controller
          * config/jwt.php - providers.storage
          */
         throw new \RuntimeException('Not implemented.');
-
         auth()->logout();
 
         return response()->json(['message' => 'Successfully logged out']);

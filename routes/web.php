@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArticleCategoryController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Routing\Router;
@@ -14,6 +15,8 @@ Route::group(['prefix' => '/api'], function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::post('/refresh', [AuthController::class, 'refresh']);
     });
+
+    Route::get('/article-categories', [ArticleCategoryController::class, 'index']);
 });
 
 /*Route::controller(AuthController::class)

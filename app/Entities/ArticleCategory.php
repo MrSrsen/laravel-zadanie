@@ -29,7 +29,7 @@ class ArticleCategory
     #[\Doctrine\ORM\Mapping\InverseJoinColumn(name: 'article_category_id', nullable: false, onDelete: 'CASCADE')]
     private Collection $bloggers;
 
-    private function __construct(string $title)
+    public function __construct(string $title)
     {
         $this->title = $title;
 
@@ -37,12 +37,12 @@ class ArticleCategory
         $this->bloggers = new ArrayCollection();
     }
 
-    private function getTitle(): string
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    private function setTitle(string $title): static
+    public function setTitle(string $title): static
     {
         $this->title = $title;
 

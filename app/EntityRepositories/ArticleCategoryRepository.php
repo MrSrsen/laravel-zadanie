@@ -13,4 +13,14 @@ class ArticleCategoryRepository extends EntityRepository
     {
         return App::make(self::class);
     }
+
+    /** @return array<Article> */
+    public function findAllSorted(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->orderBy('a.title', 'ASC')
+            ->where('a.deletedAt IS NULL')
+            ->getQuery()
+            ->getResult();
+    }
 }

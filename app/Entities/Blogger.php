@@ -81,6 +81,7 @@ class Blogger implements JWTSubject, Authenticatable
     {
         if (!$this->articleCategories->contains($articleCategory)) {
             $this->articleCategories->add($articleCategory);
+            $articleCategory->addBlogger($this);
         }
 
         return $this;
@@ -90,6 +91,7 @@ class Blogger implements JWTSubject, Authenticatable
     {
         if ($this->articleCategories->contains($articleCategory)) {
             $this->articleCategories->removeElement($articleCategory);
+            $articleCategory->removeBlogger($this);
         }
 
         return $this;
