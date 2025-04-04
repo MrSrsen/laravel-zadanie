@@ -15,13 +15,17 @@ Route::group(['prefix' => '/api'], function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::post('/refresh', [AuthController::class, 'refresh']);
 
-        Route::get('/article-categories', [ArticleCategoryController::class, 'index']);
-        Route::get('/article-categories/{articleCategory}', [ArticleCategoryController::class, 'show']);
+        Route::group(['prefix' => '/article-categories'], function () {
+            Route::get('', [ArticleCategoryController::class, 'index']);
+            Route::get('/{articleCategory}', [ArticleCategoryController::class, 'show']);
+        });
 
-        Route::post('/articles', [ArticleController::class, 'create']);
-        Route::get('/articles', [ArticleController::class, 'index']);
-        Route::get('/articles/{article}', [ArticleController::class, 'show']);
-        Route::put('/articles/{article}', [ArticleController::class, 'update']);
-        Route::delete('/articles/{article}', [ArticleController::class, 'delete']);
+        Route::group(['prefix' => '/articles'], function () {
+            Route::post('', [ArticleController::class, 'create']);
+            Route::get('', [ArticleController::class, 'index']);
+            Route::get('/{article}', [ArticleController::class, 'show']);
+            Route::put('/{article}', [ArticleController::class, 'update']);
+            Route::delete('/{article}', [ArticleController::class, 'delete']);
+        });
     });
 });
