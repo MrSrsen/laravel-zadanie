@@ -13,7 +13,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class ArticleFixtures extends AbstractFixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         /** @var BloggerRepository $bloggerRepository */
         $bloggerRepository = $manager->getRepository(Blogger::class);
@@ -26,7 +26,7 @@ class ArticleFixtures extends AbstractFixture implements DependentFixtureInterfa
         $now = now();
 
         foreach ($bloggers as $blogger) {
-            $articlesCount = random_int(20, 200);
+            $articlesCount = random_int(2, 10);
             for ($i = 1; $i <= $articlesCount; ++$i) {
                 // TODO: Select only categories assigned to Blogger
                 $randomCategory = $categories[array_rand($categories)];
@@ -34,13 +34,13 @@ class ArticleFixtures extends AbstractFixture implements DependentFixtureInterfa
                 $article = new Article(
                     blogger: $blogger,
                     title: $faker->text(random_int(20, 100)),
-                    content: $faker->randomHtml(4, random_int(5, 20)),
+                    content: $faker->randomHtml(2, random_int(2, 7)),
                     category: $randomCategory,
                 );
 
                 $article
-                    ->setSubtitle($faker->text(random_int(70, 255)))
-                    ->setSummary($faker->text(random_int(200, 400)))
+                    ->setSubtitle($faker->boolean(50) ? $faker->text(random_int(70, 255)) : null)
+                    ->setSummary($faker->boolean(70) ? $faker->text(random_int(200, 400)) : null)
                     ->setPublishedAt(
                         $faker->boolean(95)
                             ? $now->subDays(random_int(1, 365))->toDateTimeImmutable()

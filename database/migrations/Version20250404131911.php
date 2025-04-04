@@ -7,9 +7,6 @@ namespace Database\Migrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20250404131911 extends AbstractMigration
 {
     public function getDescription(): string
@@ -19,7 +16,6 @@ final class Version20250404131911 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE article_categories (id UUID NOT NULL, title VARCHAR(255) NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, deleted_at TIMESTAMP(0) WITHOUT TIME ZONE DEFAULT NULL, PRIMARY KEY(id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_62A97E92B36786B ON article_categories (title)');
         $this->addSql('COMMENT ON COLUMN article_categories.created_at IS \'(DC2Type:datetime_immutable)\'');
@@ -53,8 +49,6 @@ final class Version20250404131911 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('ALTER TABLE article_article_category DROP CONSTRAINT FK_44F096D97294869C');
         $this->addSql('ALTER TABLE article_article_category DROP CONSTRAINT FK_44F096D912469DE2');
         $this->addSql('ALTER TABLE blogger_article_category DROP CONSTRAINT FK_55CF65A8D700BD1D');

@@ -31,7 +31,10 @@ class ArticleCategoryTest extends TestCase
             ->getJson('/api/article-categories', ['Authorization' => 'Bearer '.$token])
             ->assertStatus(200)
             ->assertJson([
-                'data' => [
+                'totalItems' => 11,
+                'page' => 1,
+                'maxPages' => 1,
+                'items' => [
                     [
                         'title' => 'Business',
                     ],
