@@ -9,6 +9,7 @@ use App\Utils\DoctrinePaginator;
 use Doctrine\ORM\EntityManagerInterface;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 readonly class ArticleCategoryController
 {
@@ -17,6 +18,14 @@ readonly class ArticleCategoryController
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->articleCategoryRepository = $entityManager->getRepository(ArticleCategory::class);
+    }
+
+    public function show(Request $request, string $articleCategory): JsonResponse
+    {
+        $category = $this->articleCategoryRepository->find($articleCategory)
+            ?? throw new NotFoundHttpException('ArticleCategory not found');
+
+        return new JsonResponse(ArticleCategoryResource::make($category)->toArray($request));
     }
 
     public function index(Request $request): JsonResponse

@@ -16,6 +16,7 @@ Route::group(['prefix' => '/api'], function () {
         Route::post('/refresh', [AuthController::class, 'refresh']);
 
         Route::get('/article-categories', [ArticleCategoryController::class, 'index']);
+        Route::get('/article-categories/{articleCategory}', [ArticleCategoryController::class, 'show']);
 
         Route::post('/articles', [ArticleController::class, 'create']);
         Route::get('/articles', [ArticleController::class, 'index']);
