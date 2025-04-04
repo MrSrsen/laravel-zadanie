@@ -14,7 +14,11 @@
 ## Fixtures
 
 ```shell
-php artisan doctrine:data-fixtures:import default
+php artisan doctrine:migrations:migrate
+php artisan make:queue-table
+php artisan doctrine:data-fixtures:import --do-not-append default
+php artisan app:send-article-emails
+php artisan queue:work --queue=high,default
 ```
 
 ## Xdebug for CLI commands

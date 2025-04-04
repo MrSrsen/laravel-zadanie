@@ -42,7 +42,7 @@ class ArticleFixtures extends AbstractFixture implements DependentFixtureInterfa
                     ->setSubtitle($faker->boolean(50) ? $faker->text(random_int(70, 255)) : null)
                     ->setSummary($faker->boolean(70) ? $faker->text(random_int(200, 400)) : null)
                     ->setPublishedAt(
-                        $faker->boolean(95)
+                        $faker->boolean(30)
                             ? $now->subDays(random_int(1, 365))->toDateTimeImmutable()
                             : null
                     );

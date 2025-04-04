@@ -40,14 +40,14 @@ readonly class SubscriberController
         $lastName = $request->query->getString('lastName');
         $email = $request->query->getString('email');
 
-        $query = $this->subscriberRepository->getAllSubscribersQuery(
+        $query = $this->subscriberRepository->getAllActiveBuilder(
             firstName: $firstName,
             lastName: $lastName,
             email: $email,
         );
 
         return new JsonResponse(
-            (new DoctrinePaginator($query))
+            (new DoctrinePaginator($query->getQuery()))
                 ->paginate($page, $items)
                 ->map(fn (Subscriber $subscriber) => SubscriberResource::make($subscriber)->toArray($request))
                 ->toArray()

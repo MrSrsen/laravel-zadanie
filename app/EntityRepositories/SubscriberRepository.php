@@ -4,6 +4,7 @@ namespace App\EntityRepositories;
 
 use App\Entities\Subscriber;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Illuminate\Support\Facades\App;
 
 /** @extends EntityRepository<Subscriber> */
@@ -14,7 +15,7 @@ class SubscriberRepository extends EntityRepository
         return App::make(self::class);
     }
 
-    public function getAllSubscribersQuery(?string $firstName = null, ?string $lastName = null, ?string $email = null): \Doctrine\ORM\Query
+    public function getAllActiveBuilder(?string $firstName = null, ?string $lastName = null, ?string $email = null): QueryBuilder
     {
         $qb = $this->createQueryBuilder('s')
             ->where('s.deletedAt IS NULL');
@@ -37,6 +38,6 @@ class SubscriberRepository extends EntityRepository
                 ->setParameter('email', '%'.$email.'%');
         }
 
-        return $qb->getQuery();
+        return $qb;
     }
 }

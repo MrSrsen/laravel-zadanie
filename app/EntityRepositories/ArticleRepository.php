@@ -25,4 +25,18 @@ class ArticleRepository extends EntityRepository
             ->orderBy('a.createdAt', 'DESC')
             ->getQuery();
     }
+
+    /** @return array<Article> */
+    public function findForSending(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->addSelect('b')
+            ->addSelect('c')
+            ->leftJoin('a.blogger', 'b')
+            ->leftJoin('a.category', 'c')
+            ->where('a.deletedAt IS NULL')
+            ->andWhere('a.publishedAt IS NULL')
+            ->getQuery()
+            ->getResult();
+    }
 }
