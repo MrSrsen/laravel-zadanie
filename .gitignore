@@ -16,6 +16,7 @@ yarn-error.log
 auth.json
 .idea/
 /app/Http/Modules/Sample
+.php-cs-fixer.cache
 
 # Ignore local testing stuff
 /app/Http/Modules/Test

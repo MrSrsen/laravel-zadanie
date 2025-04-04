@@ -9,6 +9,7 @@ return [
             Database\Fixtures\ArticleCategoryFixtures::class,
             Database\Fixtures\BloggerFixtures::class,
             Database\Fixtures\ArticleFixtures::class,
+            Database\Fixtures\SubscriberFixtures::class,
         ],
     ],
 ];
