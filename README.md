@@ -1,17 +1,6 @@
-# Background
+# Zadanie
 
-- Odberateľov môže byť niekoľko desiatok tisíc, blogerov niekoľko desiatok.
-- Články sa distribuujú odberateľom 2x denne, po uzávierke ktorá je ráno o 11:00 a poobede o 17:00. Distribujú sa len
-  články ktoré ešte neboli distribuované.
-- Distribúcia prebieha formou emailu, kde sa zhrnú všetky články odovzdané pred uzávierkou do jedného emailu - nechceme
-  spamovať odberateľov novým emailom pre každý nový článok.
-
-# Requirements
-
-4. Pripraviť GET pre subscribers - myslieť na potencionálnu filtráciu alebo aspon odprezentovat navrh
-5. Pripraviť asyn funkcionalitu pre zhrnutie nových článkov do jedného emailu a jeho poslanie odberateľom po uzávierke - treba myslieť na performance
-
-## Fixtures
+## Hlavne commandy
 
 ```shell
 php artisan doctrine:migrations:migrate
@@ -21,11 +10,10 @@ php artisan app:send-article-emails
 php artisan queue:work --queue=high,default
 ```
 
-## Xdebug for CLI commands
+## Poznamky
 
 ```shell
 export PHP_IDE_CONFIG="serverName=php-docker.local"
-
 php -d xdebug.mode=debug -d xdebug.start_with_request=yes bin/console ...
 ```
 
