@@ -10,6 +10,18 @@ abstract class TestCase extends BaseTestCase
 {
     private static bool $fixturesAlreadyExecuted = false;
 
+    protected function login(string $username, string $password): string
+    {
+        $response = $this
+            ->postJson('/api/login', [
+                'login' => $username,
+                'password' => $password,
+            ])
+            ->assertStatus(200);
+
+        return $response->json('access_token');
+    }
+
     protected function runFixturesOnce(): void
     {
         if (self::$fixturesAlreadyExecuted) {

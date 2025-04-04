@@ -3,6 +3,7 @@
 namespace App\Entities;
 
 use App\EntityRepositories\ArticleRepository;
+use Webmozart\Assert\Assert;
 
 #[\Doctrine\ORM\Mapping\Entity(repositoryClass: ArticleRepository::class)]
 #[\Doctrine\ORM\Mapping\HasLifecycleCallbacks]
@@ -10,29 +11,52 @@ class Article
 {
     use EntityTrait;
 
+    #[\Doctrine\ORM\Mapping\ManyToOne(targetEntity: Blogger::class, inversedBy: 'articles')]
+    #[\Doctrine\ORM\Mapping\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    private Blogger $blogger;
+
     #[\Doctrine\ORM\Mapping\Column(type: 'string', nullable: false)]
     private string $title;
 
     #[\Doctrine\ORM\Mapping\Column(type: 'string', nullable: true)]
     private ?string $subtitle = null;
 
-    #[\Doctrine\ORM\Mapping\Column(type: 'string', nullable: true)]
+    #[\Doctrine\ORM\Mapping\Column(type: 'text', nullable: true)]
     private ?string $summary = null;
 
     #[\Doctrine\ORM\Mapping\Column(type: 'text', nullable: true)]
     private string $content;
 
-    #[\Doctrine\ORM\Mapping\ManyToMany(targetEntity: ArticleCategory::class, mappedBy: 'articles', cascade: ['persist'])]
+    #[\Doctrine\ORM\Mapping\ManyToOne(targetEntity: ArticleCategory::class, cascade: ['persist'], inversedBy: 'articles')]
+    #[\Doctrine\ORM\Mapping\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ArticleCategory $category;
 
     #[\Doctrine\ORM\Mapping\Column(type: 'datetime_immutable', nullable: true)]
     private ?\DateTimeImmutable $publishedAt = null;
 
-    public function __construct(string $title, string $content, ArticleCategory $category)
+    public function __construct(Blogger $blogger, string $title, string $content, ArticleCategory $category)
     {
+        Assert::maxLength($title, 255);
+
+        $this->blogger = $blogger;
         $this->title = $title;
         $this->content = $content;
         $this->category = $category;
+
+        $blogger->addArticle($this);
+        $category->addArticle($this);
+    }
+
+    public function getBlogger(): Blogger
+    {
+        return $this->blogger;
+    }
+
+    public function setBlogger(Blogger $blogger): static
+    {
+        $this->blogger = $blogger;
+
+        return $this;
     }
 
     public function getTitle(): string
@@ -54,6 +78,7 @@ class Article
 
     public function setSubtitle(?string $subtitle): static
     {
+        Assert::maxLength($subtitle, 255);
         $this->subtitle = $subtitle;
 
         return $this;

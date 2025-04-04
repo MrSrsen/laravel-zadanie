@@ -12,18 +12,18 @@ class ArticleCategory
 {
     use EntityTrait;
 
-    #[\Doctrine\ORM\Mapping\Column(type: 'string', nullable: false)]
+    #[\Doctrine\ORM\Mapping\Column(type: 'string', unique: true, nullable: false)]
     private string $title;
 
-    /** @var Collection<Article> */
+    /** @var Collection<array-key, Article> */
     #[\Doctrine\ORM\Mapping\ManyToMany(targetEntity: Article::class, inversedBy: 'category', orphanRemoval: true)]
     #[\Doctrine\ORM\Mapping\JoinTable(name: 'article_article_category')]
     #[\Doctrine\ORM\Mapping\JoinColumn(name: 'article_id', nullable: false, onDelete: 'CASCADE')]
     #[\Doctrine\ORM\Mapping\InverseJoinColumn(name: 'category_id', nullable: false, onDelete: 'CASCADE')]
     private Collection $articles;
 
-    /** @var Collection<Blogger> */
-    #[\Doctrine\ORM\Mapping\ManyToMany(targetEntity: Blogger::class, inversedBy: 'category')]
+    /** @var Collection<array-key, Blogger> */
+    #[\Doctrine\ORM\Mapping\ManyToMany(targetEntity: Blogger::class, inversedBy: 'articleCategories')]
     #[\Doctrine\ORM\Mapping\JoinTable(name: 'blogger_article_category')]
     #[\Doctrine\ORM\Mapping\JoinColumn(name: 'blogger_id', nullable: false, onDelete: 'CASCADE')]
     #[\Doctrine\ORM\Mapping\InverseJoinColumn(name: 'article_category_id', nullable: false, onDelete: 'CASCADE')]
@@ -49,7 +49,7 @@ class ArticleCategory
         return $this;
     }
 
-    /** @return Collection<Article> */
+    /** @return Collection<array-key, Article> */
     public function getArticles(): Collection
     {
         return $this->articles;
@@ -73,6 +73,7 @@ class ArticleCategory
         return $this;
     }
 
+    /** @return Collection<array-key, Blogger> */
     public function getBloggers(): Collection
     {
         return $this->bloggers;

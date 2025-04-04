@@ -14,13 +14,11 @@ class ArticleCategoryRepository extends EntityRepository
         return App::make(self::class);
     }
 
-    /** @return array<Article> */
-    public function findAllSorted(): array
+    public function getAllSortedQuery(): \Doctrine\ORM\Query
     {
         return $this->createQueryBuilder('a')
-            ->orderBy('a.title', 'ASC')
             ->where('a.deletedAt IS NULL')
-            ->getQuery()
-            ->getResult();
+            ->orderBy('a.title', 'ASC')
+            ->getQuery();
     }
 }

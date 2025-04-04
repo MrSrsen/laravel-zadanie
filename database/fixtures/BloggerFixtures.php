@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Hash;
 
 class BloggerFixtures extends AbstractFixture implements DependentFixtureInterface
 {
+    public const TECH_BRO_EMAIL = 'tech.bro@example.com';
+
+    public const JOZKO_MRKVICKA_EMAIL = 'jozko.mrkvicka@example.sk';
+
     public function load(ObjectManager $manager): void
     {
         $articleCategoryRepository = $manager->getRepository(ArticleCategory::class);
@@ -22,9 +26,9 @@ class BloggerFixtures extends AbstractFixture implements DependentFixtureInterfa
         $history = $articleCategoryRepository->findOneBy(['title' => ArticleCategoryFixtures::HISTORY]);
 
         $techBro = new Blogger(
-            'TechBro',
-            'tech.bro@example.com',
-            Hash::make('pass123'),
+            title: 'TechBro',
+            email: self::TECH_BRO_EMAIL,
+            password: Hash::make('pass123'),
         );
         $techBro
             ->addArticleCategory($technology)
@@ -32,9 +36,9 @@ class BloggerFixtures extends AbstractFixture implements DependentFixtureInterfa
         $manager->persist($techBro);
 
         $jozko = new Blogger(
-            'Jožko Mrkvička',
-            'jozko.mrkvicka@example.sk',
-            Hash::make('mrkvicka'),
+            title: 'Jožko Mrkvička',
+            email: self::JOZKO_MRKVICKA_EMAIL,
+            password: Hash::make('mrkvicka'),
         );
         $jozko
             ->addArticleCategory($travel)

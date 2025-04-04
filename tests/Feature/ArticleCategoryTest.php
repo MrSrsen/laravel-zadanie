@@ -13,10 +13,22 @@ class ArticleCategoryTest extends TestCase
         $this->runFixturesOnce();
     }
 
-    public function testIndex(): void
+    public function testIndexAsUnauthenticated(): void
     {
         $this
             ->getJson('/api/article-categories')
+            ->assertStatus(403)
+            ->assertJson([
+                'message' => 'Unauthenticated.',
+            ]);
+    }
+
+    public function testIndex(): void
+    {
+        $token = $this->login('jozko.mrkvicka@example.sk', 'mrkvicka');
+
+        $this
+            ->getJson('/api/article-categories', ['Authorization' => 'Bearer '.$token])
             ->assertStatus(200)
             ->assertJson([
                 'data' => [

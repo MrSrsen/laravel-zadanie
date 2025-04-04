@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 
-class HomeController
+readonly class HomeController
 {
     public function getVersion(): JsonResponse
     {
