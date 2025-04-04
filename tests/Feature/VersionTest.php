@@ -8,9 +8,7 @@ class VersionTest extends TestCase
 {
     public function testVersion(): void
     {
-        $response = $this->get('/api/version');
-
-        $response
+        $this->get('/api/version')
             ->assertStatus(200)
             ->assertJson([
                 'name' => 'laravel/laravel',

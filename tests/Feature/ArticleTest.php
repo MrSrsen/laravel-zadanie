@@ -124,11 +124,12 @@ class ArticleTest extends TestCase
         $article['subtitle'] = 'New subtitle';
         $article['content'] = 'New content';
         $article['category'] = $technology->getId();
+        unset($article['updatedAt']); // will change
 
         $response = $this
             ->putJson('/api/articles/'.$article['id'], $article, ['Authorization' => 'Bearer '.$token])
             ->assertStatus(200)
-            ->assertJsonFragment($article);
+            ->assertJson($article);
 
         return [$token, $response->json()];
     }

@@ -28,7 +28,7 @@ readonly class ArticleCategoryController
         return new JsonResponse(ArticleCategoryResource::make($category)->toArray($request));
     }
 
-    public function index(Request $request): JsonResponse
+    public function list(Request $request): JsonResponse
     {
         $page = $request->query->getInt('page', 1);
         $page = max(1, $page);

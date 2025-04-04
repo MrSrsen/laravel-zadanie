@@ -29,7 +29,7 @@ readonly class ArticleController
         $this->articleCategoryRepository = $this->entityManager->getRepository(ArticleCategory::class);
     }
 
-    public function index(Request $request): JsonResponse
+    public function list(Request $request): JsonResponse
     {
         $page = $request->query->getInt('page', 1);
         $page = max(1, $page);
@@ -46,6 +46,19 @@ readonly class ArticleController
                 ->map(fn (Article $article) => ArticleResource::make($article)->toArray($request))
                 ->toArray()
         );
+    }
+
+    public function show(Request $request, string $article): JsonResponse
+    {
+        $article = $this->articleRepository->find($article)
+            ?? throw new NotFoundHttpException('Article not found.');
+
+        $user = auth()->user();
+        if ($article->getBlogger()->getId() !== $user->getId()) {
+            throw new AccessDeniedHttpException('Cannot view article. Only authors can view articles.');
+        }
+
+        return new JsonResponse(ArticleResource::make($article)->toArray($request));
     }
 
     public function create(CreateArticleRequest $request): JsonResponse
@@ -72,19 +85,6 @@ readonly class ArticleController
 
         $this->entityManager->persist($article);
         $this->entityManager->flush();
-
-        return new JsonResponse(ArticleResource::make($article)->toArray($request));
-    }
-
-    public function show(Request $request, string $article): JsonResponse
-    {
-        $article = $this->articleRepository->find($article)
-            ?? throw new NotFoundHttpException('Article not found.');
-
-        $user = auth()->user();
-        if ($article->getBlogger()->getId() !== $user->getId()) {
-            throw new AccessDeniedHttpException('Cannot view article. Only authors can view articles.');
-        }
 
         return new JsonResponse(ArticleResource::make($article)->toArray($request));
     }

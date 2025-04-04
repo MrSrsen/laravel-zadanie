@@ -16,6 +16,15 @@ class SubscriberFixtures extends AbstractFixture
 
         $assignedEmails = [];
 
+        // For testing
+        $staticSubscriber = new Subscriber(
+            firstName: 'Static',
+            lastName: 'Subscriber',
+            email: 'static.subscriber@example.com',
+        );
+        $manager->persist($staticSubscriber);
+        $assignedEmails[] = $staticSubscriber->getEmail();
+
         for ($i = 0; $i < 100; ++$i) {
             $gender = $faker->boolean() ? Person::GENDER_MALE : Person::GENDER_FEMALE;
 

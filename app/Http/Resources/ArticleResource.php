@@ -23,6 +23,7 @@ class ArticleResource extends JsonResource
             'category' => $article->getCategory()->getId(),
             'publishedAt' => $article->getPublishedAt()?->format('c'),
             'createdAt' => $article->getCreatedAt()->format('c'),
+            'updatedAt' => $article->getUpdatedAt()?->format('c'),
         ];
     }
 }

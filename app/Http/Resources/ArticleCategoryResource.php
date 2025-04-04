@@ -17,6 +17,8 @@ class ArticleCategoryResource extends JsonResource
         return [
             'id' => $articleCategory->getId(),
             'title' => $articleCategory->getTitle(),
+            'createdAt' => $articleCategory->getCreatedAt()->format('c'),
+            'updatedAt' => $articleCategory->getUpdatedAt()?->format('c'),
         ];
     }
 }
